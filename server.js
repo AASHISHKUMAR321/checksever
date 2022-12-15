@@ -1,5 +1,3 @@
-
-
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -19,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uid = new ShortUniqueId({ length: 10 });
 
-const file = path.join(__dirname, 'db.json');
+const file = path.join(__dirname, "db.json");
 const adapter = new JSONFileSync(file);
 const db = new LowSync(adapter);
 // db.read();
@@ -29,18 +27,16 @@ const db = new LowSync(adapter);
 const server = jsonServer.create();
 // foreign key suffix as second parameter to the module. Below code sets it to dummy
 // it fixes delete problem but causes expansion problems.
-const router = jsonServer.router(join(__dirname, 'db.json'),{
-  foreignKeySuffix: 'dummy'
+const router = jsonServer.router(join(__dirname, "db.json"), {
+  foreignKeySuffix: "dummy",
 });
 
-
-const staticDir = path.join(__dirname, 'server-files');
-const middlewares = jsonServer.defaults({static: staticDir});
+const staticDir = path.join(__dirname, "server-files");
+const middlewares = jsonServer.defaults({ static: staticDir });
 
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
 // server.use(express.static("public"));
-
 
 // Authorization logic
 server.use((req, res, next) => {
@@ -51,7 +47,7 @@ server.use((req, res, next) => {
 
     // if ((route === 'GET' && ))
 
-    if ((req.url).startsWith(route)) {
+    if (req.url.startsWith(route)) {
       if (methods.includes(req.method)) {
         NeedsAuthorization = true;
         break;
@@ -167,7 +163,7 @@ server.post("/user/login", (req, res) => {
 });
 
 function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "3h" });
+  return jwt.sign(user, "shhhhh");
 }
 
 // To modify responses, overwrite router.render method:
@@ -180,8 +176,6 @@ function generateAccessToken(user) {
 
 server.use(router);
 
-server.listen( serverPort, () => {
-  console.log(
-    `JSON Server is running at http://localhost:${serverPort}`
-  );
+server.listen(serverPort, () => {
+  console.log(`JSON Server is running at http://localhost:${serverPort}`);
 });
